@@ -3,9 +3,11 @@ package main
 import (
 	"flag"
 	"log"
+	"net/http"
 
 	"github.com/tlsh0/todolist/internal/db"
 	"github.com/tlsh0/todolist/internal/models"
+	"github.com/tlsh0/todolist/internal/router"
 )
 
 func main() {
@@ -36,5 +38,10 @@ func main() {
 			log.Fatal(err)
 		}
 		log.Println("tables down...")
+	}
+
+	r := router.NewRouter()
+	if err = http.ListenAndServe(":8080", r); err != nil {
+		log.Fatal(err)
 	}
 }
