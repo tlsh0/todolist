@@ -8,7 +8,7 @@ endpoints:
 - POST /logout - end session
 - POST /signup - register 
 - GET /tasks - list of all tasks of the user
-- UPDATE /tasks - rearrange the order of the tasks
+- PATCH /tasks - rearrange the order of the tasks
 - POST /tasks - add a new task
 - UPDATE /task/{id} - change the status of the task
 - DELETE /task/{id} - delete the task completely
