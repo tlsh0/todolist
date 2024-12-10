@@ -6,16 +6,12 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/go-redis/redis"
+	_ "github.com/lib/pq"
+
 	"github.com/joho/godotenv"
 	"github.com/tlsh0/todolist/internal/handlers"
+	repo "github.com/tlsh0/todolist/internal/repository"
 )
-
-type app struct {
-	routes *http.ServeMux
-	cache  *redis.Client
-	db     *sql.DB
-}
 
 func init() {
 	err := godotenv.Load()
@@ -25,15 +21,24 @@ func init() {
 }
 
 func main() {
+	// config
+	// routes
+	// caching
+	//
+	//
 	routes := handlers.Routes()
 
-	cache := redis.NewClient(&redis.Options{})
+	// cache := redis.NewClient(&redis.Options{})
 
 	connString := os.Getenv("CONNECTION_STRING")
 	db, err := sql.Open("postgres", connString)
 	if err != nil {
-		log.Fatal("error connecting to the db: ", err)
+		log.Fatal("Error connecting to the db: ", err)
 	}
 
-	http.ListenAndServe(":3000", app.routes)
+	storage := repo.New(db)
+
+	storage.CreateUser()
+
+	http.ListenAndServe(":3000", routes)
 }
